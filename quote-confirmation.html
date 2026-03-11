@@ -284,9 +284,8 @@
 
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
   // Read name and phone from URL params passed by quote form
-  const params = new URLSearchParams(window.location.search);
-  const name  = params.get('name');
-  const phone = params.get('phone');
+  const name  = sessionStorage.getItem('quoteName');
+  const phone = sessionStorage.getItem('quotePhone');
 
   if (name) {
     const heading = document.querySelector('h1');

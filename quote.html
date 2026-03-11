@@ -344,7 +344,9 @@
       if (!res.ok) throw new Error('Submission failed');
 
       // Redirect to confirmation page
-      window.location.href = `quote-confirmation.html?name=${encodeURIComponent(name)}&phone=${encodeURIComponent(phone)}`;
+      sessionStorage.setItem('quoteName', name);
+      sessionStorage.setItem('quotePhone', phone);
+      window.location.href = '/quote-confirmation';
 
     } catch (err) {
       btn.textContent = 'Get My Free Proposals';
