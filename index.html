@@ -114,6 +114,9 @@
 
   /* ── ANNOUNCEMENT BAR ── */
   .announce {
+    display: block;
+    text-decoration: none;
+    cursor: pointer;
     position: sticky;
     top: 0;
     z-index: 100;
@@ -838,9 +841,9 @@
 <body>
 
 <!-- Announcement -->
-<div class="announce">
-  <strong>Now accepting 2026 clients</strong> — Get your free quote today <a href="#cta">→</a>
-</div>
+<a href="quote.html" class="announce">
+  <strong>Now accepting 2026 clients</strong> — Get your free quote today →
+</a>
 
 <!-- Nav -->
 <nav>
@@ -862,7 +865,7 @@
     <li><a href="#faq">FAQ</a></li>
     <li><a href="#questionnaire">Free Questionnaire</a></li>
     <li><a href="https://form.typeform.com/to/H5WFafYK" target="_blank">Become a Provider</a></li>
-    <li><a href="#cta" class="nav-cta">Get a Quote</a></li>
+    <li><a href="quote.html" class="nav-cta">Get a Quote</a></li>
   </ul>
 </nav>
 
@@ -875,7 +878,7 @@
   <h1 class="fade-up">Your office deserves<br /><em>a cleaner standard.</em></h1>
   <p class="fade-up">Get matched with top-rated, vetted cleaning professionals across the Bay Area. Competitive quotes, zero hassle.</p>
   <div class="hero-actions fade-up">
-    <a href="#cta" class="btn-primary">
+    <a href="quote.html" class="btn-primary">
       Get My Free Quote
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
     </a>
@@ -1180,7 +1183,7 @@
 <section class="final-cta" id="cta">
   <h2>Ready for a cleaner office?</h2>
   <p>Free quote. No commitment. Matched in under 48 hours.</p>
-  <a href="#" class="btn-primary">
+  <a href="quote.html" class="btn-primary">
     Get My Free Quote
     <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
   </a>
@@ -1206,13 +1209,13 @@
       <a href="privacy.html">Privacy</a>
       <a href="terms.html">Terms</a>
       <a href="https://form.typeform.com/to/H5WFafYK" target="_blank">Become a Provider</a>
-      <a href="mailto:mof@sunrisespecialtypartners.com">Contact</a>
+      <a href="/cdn-cgi/l/email-protection#9ff2f0f9dfeceaf1edf6ecfaeceffafcf6fef3ebe6effeedebf1faedecb1fcf0f2">Contact</a>
     </div>
     <span>© 2026 Sunrise Specialty Partners</span>
   </div>
 </footer>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
   // FAQ toggle
   function toggleFaq(btn) {
     const item = btn.closest('.faq-item');
@@ -1268,9 +1271,10 @@
   // Stagger children within same parent
   document.querySelectorAll('.steps-grid, .proof, .hero-actions').forEach(parent => {
     parent.querySelectorAll('.fade-up').forEach((el, i) => {
-      el.style.transitionDelay = (i * 0.08) + 's';
+      el.style.transitionDelay = `${i * 80}ms`;
     });
   });
+
 </script>
 </body>
 </html>
