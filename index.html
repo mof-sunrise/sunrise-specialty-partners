@@ -250,6 +250,42 @@
     color: var(--teal);
   }
 
+  /* ── PHONE CALLOUT ── */
+  .phone-callout {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin: 36px auto 0;
+    max-width: 480px;
+    padding: 14px 24px;
+    background: var(--white);
+    border: 1.5px solid var(--amber);
+    border-radius: var(--radius);
+    box-shadow: 0 4px 20px rgba(255,191,0,0.13);
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .phone-callout:hover { transform: translateY(-2px); box-shadow: 0 6px 28px rgba(255,191,0,0.22); }
+  .phone-callout .phone-icon {
+    width: 34px; height: 34px; border-radius: 50%;
+    background: rgba(255,191,0,0.12);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .phone-callout .phone-text { font-size: 14px; color: var(--ink-muted); font-weight: 400; }
+  .phone-callout .phone-text strong { color: var(--ink); font-weight: 600; }
+  .phone-callout .phone-number {
+    font-family: 'Instrument Serif', serif;
+    font-size: 21px; color: var(--teal); text-decoration: none;
+    letter-spacing: -0.02em; white-space: nowrap;
+    transition: color 0.15s;
+  }
+  .phone-callout .phone-number:hover { color: var(--teal-dark); }
+
+  @media (max-width: 520px) {
+    .phone-callout { flex-direction: column; text-align: center; gap: 6px; padding: 14px 18px; }
+  }
+
   /* ── CITIES STRIP ── */
   .cities-strip {
     border-top: 1px solid var(--border);
@@ -784,6 +820,18 @@
     box-shadow: 0 4px 24px rgba(13,110,110,0.4);
   }
 
+  .final-cta .phone-callout {
+    margin: 32px auto 0;
+    background: rgba(255,255,255,0.07);
+    border-color: rgba(255,191,0,0.4);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+  }
+  .final-cta .phone-callout:hover { box-shadow: 0 6px 28px rgba(0,0,0,0.3); }
+  .final-cta .phone-callout .phone-text { color: rgba(255,255,255,0.6); }
+  .final-cta .phone-callout .phone-text strong { color: var(--white); }
+  .final-cta .phone-callout .phone-number { color: var(--amber); }
+  .final-cta .phone-callout .phone-number:hover { color: #ffd54f; }
+
   /* ── FOOTER ── */
   footer {
     padding: 40px;
@@ -893,6 +941,14 @@
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
     </a>
     <a href="#process" class="btn-secondary">See How It Works</a>
+  </div>
+
+  <div class="phone-callout fade-up">
+    <div class="phone-icon">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#FFBF00" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6A19.79 19.79 0 012.12 4.18 2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+    </div>
+    <span class="phone-text">Call for an immediate quote:</span>
+    <a class="phone-number" href="tel:+16507224998">(650) 722-4998</a>
   </div>
 </section>
 
@@ -1197,6 +1253,14 @@
     Get My Free Quote
     <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
   </a>
+
+  <div class="phone-callout" style="position:relative;">
+    <div class="phone-icon">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#FFBF00" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6A19.79 19.79 0 012.12 4.18 2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+    </div>
+    <span class="phone-text">Call for an immediate quote:</span>
+    <a class="phone-number" href="tel:+16507224998">(650) 722-4998</a>
+  </div>
 </section>
 
 <!-- Footer -->
