@@ -176,6 +176,28 @@
     .step2-intro { flex-direction: column; }
   }
 </style>
+  <script>
+  (function(h,o,u,n,d) {
+    h = h[d] = h[d] || { q: [], onReady: function (c) { h.q.push(c) } }
+    d = o.createElement(u); d.async = 1; d.src = n; d.crossOrigin=''
+    n = o.getElementsByTagName(u)[0]; n.parentNode.insertBefore(d, n)
+  })(window, document, 'script', 'https://www.datadoghq-browser-agent.com/us3/v6/datadog-rum.js', 'DD_RUM')
+  window.DD_RUM.onReady(function () {
+    window.DD_RUM.init({
+      applicationId: 'c3ebfd59-c041-47b1-a70c-9162fdd8ed4c',
+      clientToken: 'pub9bf859c2ad81dfd277eeb84406fedac7',
+      site: 'us3.datadoghq.com',
+      service: 'sunrise-specialty-partners',
+      env: 'prod',
+      version: '1.0.0',
+      sessionSampleRate: 100,
+      sessionReplaySampleRate: 20,
+      trackResources: true,
+      trackUserInteractions: true,
+      trackLongTasks: true,
+    });
+  });
+  </script>
 </head>
 <body>
 
