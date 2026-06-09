@@ -365,6 +365,23 @@
 </div>
 
 <script>
+  // PostHog: fires when user lands here = they completed the initial quote form
+  window.addEventListener('DOMContentLoaded', function () {
+    if (typeof posthog === 'undefined') return;
+    var params = new URLSearchParams(window.location.search);
+    posthog.capture('quote_form_submitted', {
+      step: 1,
+      page: window.location.pathname,
+      utm_source:   params.get('utm_source')   || null,
+      utm_medium:   params.get('utm_medium')   || null,
+      utm_campaign: params.get('utm_campaign') || null,
+      utm_content:  params.get('utm_content')  || null,
+      referrer:     document.referrer           || null
+    });
+  });
+</script>
+
+<script>
   document.getElementById('step2-submit').addEventListener('click', async () => {
     const btn = document.getElementById('step2-submit');
     const address = document.getElementById('q2-address').value.trim();

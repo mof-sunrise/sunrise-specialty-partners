@@ -290,5 +290,24 @@
     setTimeout(init, 400);
   })();
 </script>
+
+<script>
+  // PostHog: fires when user lands here = full quote conversion complete
+  window.addEventListener('DOMContentLoaded', function () {
+    if (typeof posthog === 'undefined') return;
+    var params = new URLSearchParams(window.location.search);
+    var skipped = sessionStorage.getItem('step2Completed') === 'false';
+    posthog.capture('quote_confirmed', {
+      step: 2,
+      step2_skipped: skipped,
+      page: window.location.pathname,
+      utm_source:   params.get('utm_source')   || null,
+      utm_medium:   params.get('utm_medium')   || null,
+      utm_campaign: params.get('utm_campaign') || null,
+      utm_content:  params.get('utm_content')  || null,
+      referrer:     document.referrer           || null
+    });
+  });
+</script>
 </body>
 </html>
