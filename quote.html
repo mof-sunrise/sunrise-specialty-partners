@@ -60,7 +60,7 @@
   .hero-band p { font-size: 19px; color: rgba(255,255,255,0.7); font-weight: 300; line-height: 1.65; max-width: 520px; margin: 0 auto; position: relative; }
 
   /* PHONE */
-  .phone-callout { background: var(--white); border: 1.5px solid var(--amber); border-radius: var(--radius); max-width: 520px; margin: -36px auto 40px; position: relative; z-index: 10; display: flex; align-items: center; justify-content: center; gap: 12px; padding: 16px 28px; box-shadow: 0 4px 20px rgba(255,191,0,0.15); transition: transform 0.15s, box-shadow 0.15s; }
+  .phone-callout { background: var(--white); border: 1.5px solid var(--amber); border-radius: var(--radius); max-width: 520px; margin: 20px auto 0; position: relative; z-index: 10; display: flex; align-items: center; justify-content: center; gap: 12px; padding: 16px 28px; box-shadow: 0 4px 20px rgba(255,191,0,0.15); transition: transform 0.15s, box-shadow 0.15s; }
   .phone-callout:hover { transform: translateY(-2px); box-shadow: 0 6px 28px rgba(255,191,0,0.22); }
   .phone-callout .phone-icon { width: 36px; height: 36px; border-radius: 50%; background: rgba(255,191,0,0.12); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
   .phone-callout .phone-text { font-size: 15px; color: var(--ink-muted); font-weight: 400; }
@@ -130,7 +130,7 @@
     .main { padding: 0 20px 60px; }
     .form-two-col, .form-three-col { grid-template-columns: 1fr; }
     .pref-group { flex-direction: column; }
-    .phone-callout { flex-direction: column; text-align: center; gap: 8px; margin: -28px 20px 32px; padding: 16px 20px; }
+    .phone-callout { flex-direction: column; text-align: center; gap: 8px; margin: 20px 0 0; padding: 16px 20px; }
   }
 </style>
 <script>function initApollo(){var n=Math.random().toString(36).substring(7),o=document.createElement("script");o.src="https://assets.apollo.io/micro/website-tracker/tracker.iife.js?nocache="+n,o.async=!0,o.defer=!0,o.onload=function(){window.trackingFunctions.onLoad({appId:"68bf6382afd8ec0021413232"})},document.head.appendChild(o)}initApollo();</script>
@@ -173,11 +173,6 @@
   <p class="fade-up">Tell us the basics and we'll match you with vetted providers who each submit competing proposals, delivered to your inbox within 48 hours.</p>
 </div>
 
-<div class="phone-callout fade-up">
-  <div class="phone-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFBF00" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg></div>
-  <div class="phone-text"><strong>Prefer to talk?</strong></div>
-  <a href="tel:+16507224998" class="phone-number">(650) 722-4998</a>
-</div>
 
 <div class="main">
 
@@ -251,6 +246,12 @@
       <div class="trust-item"><span class="t-icon">✓</span>100% free, zero obligation to commit</div>
       <div class="trust-item"><span class="t-icon">✓</span>Proposals delivered within 48 hours</div>
     </div>
+  </div>
+
+  <div class="phone-callout fade-up">
+    <div class="phone-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFBF00" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg></div>
+    <div class="phone-text"><strong>Prefer to talk?</strong></div>
+    <a href="tel:+16507224998" class="phone-number">(650) 722-4998</a>
   </div>
 
 </div>
