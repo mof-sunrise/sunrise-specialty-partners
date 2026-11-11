@@ -11,8 +11,26 @@ export default async function handler(req, res) {
   const SUPABASE_KEY = process.env.SUPABASE_KEY;
   const RESEND_KEY   = process.env.RESEND_KEY;
 
+  // Send one email through Resend. Never throws: returns true if Resend accepted it.
+  const sendEmail = async (payload) => {
+    try {
+      const r = await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${RESEND_KEY}` },
+        body: JSON.stringify(payload)
+      });
+      if (!r.ok) console.error('Resend error', r.status, await r.text().catch(() => ''));
+      return r.ok;
+    } catch (err) {
+      console.error('Resend request failed', err);
+      return false;
+    }
+  };
+
+  // 1. Save to Supabase. If this fails (for example, the project is paused),
+  //    keep going: both emails still go out so the lead is never lost silently.
+  let saved = false;
   try {
-    // 1. Save to Supabase
     const dbRes = await fetch(`${SUPABASE_URL}/rest/v1/quote_requests`, {
       method: 'POST',
       headers: {
@@ -23,20 +41,22 @@ export default async function handler(req, res) {
       },
       body: JSON.stringify({ name, email, phone, zip, office_size, frequency, contact_preference })
     });
-    if (!dbRes.ok) throw new Error('Supabase error');
+    saved = dbRes.ok;
+    if (!saved) console.error('Supabase insert failed', dbRes.status, await dbRes.text().catch(() => ''));
+  } catch (err) {
+    console.error('Supabase request failed', err);
+  }
 
+  {
     // 2. Confirmation email to submitter
-    const firstName = name.split(' ')[0];
+    const firstName = String(name || '').trim().split(' ')[0] || 'there';
     const contactMethodText = contact_preference === 'phone'
       ? `I'll give you a quick call at <strong>${phone}</strong> from <strong>(650) 722-4998</strong> to learn a bit more about your space.`
       : contact_preference === 'email'
       ? `I'll send over your proposals by email. If I need to clarify anything about your space, I'll reach out to <strong>${email}</strong> first.`
       : `I'll reach out shortly to learn a bit more about your space, then match you with providers who will each submit competing proposals.`;
 
-    await fetch('https://api.resend.com/emails', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${RESEND_KEY}` },
-      body: JSON.stringify({
+    const confirmation = sendEmail({
         from: 'Morgan Olson-Fabbro <morgan@sunrisespecialtypartners.com>',
         to: email,
         subject: `Your quote request is in, ${firstName}`,
@@ -58,20 +78,18 @@ export default async function handler(req, res) {
               <p style="color:#888;font-size:13px;margin:0;">Morgan Olson-Fabbro<br/>Founder, Sunrise Specialty Partners<br/>morgan@sunrisespecialtypartners.com · (650) 722-4998</p>
             </div>
           </div>`
-      })
     });
 
-    // 3. Notification email to Morgan
-    await fetch('https://api.resend.com/emails', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${RESEND_KEY}` },
-      body: JSON.stringify({
+    // 3. Notification email to Morgan (flagged when the database save failed)
+    const notSavedNote = saved ? '' : `
+            <p style="background:#FDECEA;border:1px solid #F5C2BC;color:#8A1F11;border-radius:8px;padding:12px 16px;margin:0 0 16px;font-size:14px;line-height:1.5;"><strong>Not saved to the database.</strong> Supabase could not be reached (the project may be paused). Add this lead to the quote_requests table by hand.</p>`;
+    const notification = sendEmail({
         from: 'Sunrise Site <morgan@sunrisespecialtypartners.com>',
         to: 'mof@sunrisespecialtypartners.com',
-        subject: `New quote request: ${name}`,
+        subject: `${saved ? '' : '[Not saved to database] '}New quote request: ${name}`,
         html: `
           <div style="font-family:sans-serif;max-width:560px;margin:0 auto;">
-            <h2 style="color:#006D77;">New Quote Request</h2>
+            <h2 style="color:#006D77;">New Quote Request</h2>${notSavedNote}
             <table style="width:100%;border-collapse:collapse;font-size:15px;">
               <tr><td style="padding:8px 0;color:#888;width:140px;">Name</td><td style="padding:8px 0;color:#111;font-weight:500;">${name}</td></tr>
               <tr><td style="padding:8px 0;color:#888;">Email</td><td style="padding:8px 0;color:#111;">${email}</td></tr>
@@ -83,13 +101,12 @@ export default async function handler(req, res) {
             </table>
             <p style="color:#888;font-size:13px;margin-top:16px;">Step 2 details may follow shortly if they complete the property info form.</p>
           </div>`
-      })
     });
 
-    res.status(200).json({ success: true });
+    const [, notified] = await Promise.all([confirmation, notification]);
 
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: err.message });
+    // The lead is lost only if it was neither saved nor emailed to Morgan.
+    if (!saved && !notified) return res.status(500).json({ error: 'Lead could not be saved or emailed' });
+    return res.status(200).json({ success: true, saved, notified });
   }
 }
