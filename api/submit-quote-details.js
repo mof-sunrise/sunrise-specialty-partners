@@ -1,3 +1,5 @@
+import { buildDetailsEmail, visitorSubject } from './_email.js';
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
@@ -14,6 +16,7 @@ export default async function handler(req, res) {
   //    saved), keep going: the details are still emailed to Morgan.
   //    status: 'updated' | 'no-match' | 'failed'
   let status = 'failed';
+  let lead = null;
   try {
     const dbRes = await fetch(
       `${SUPABASE_URL}/rest/v1/quote_requests?email=eq.${encodeURIComponent(email)}&order=created_at.desc&limit=1`,
@@ -31,6 +34,7 @@ export default async function handler(req, res) {
     if (dbRes.ok) {
       const rows = await dbRes.json().catch(() => null);
       status = Array.isArray(rows) && rows.length === 0 ? 'no-match' : 'updated';
+      if (Array.isArray(rows) && rows.length) lead = rows[0];
     } else {
       console.error('Supabase update failed', dbRes.status, await dbRes.text().catch(() => ''));
     }
@@ -77,7 +81,37 @@ export default async function handler(req, res) {
     console.error('Resend request failed', err);
   }
 
+  // 3. Update to the visitor, in the same conversation as their confirmation.
+  //    Sent only when the details matched a saved lead: the address and name
+  //    come from that saved row, never straight from this request, so this
+  //    endpoint cannot be used to email arbitrary addresses.
+  let visitorUpdated = false;
+  if (saved && lead && lead.email) {
+    const firstName = String(lead.name || '').trim().split(' ')[0] || 'there';
+    const update = buildDetailsEmail({ firstName, address, headcount, restrooms, kitchen, depth, budget, notes });
+    if (update.hasDetails) {
+      try {
+        const r = await fetch('https://api.resend.com/emails', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${RESEND_KEY}` },
+          body: JSON.stringify({
+            from: 'Morgan Olson-Fabbro <morgan@sunrisespecialtypartners.com>',
+            reply_to: 'morgan@sunrisespecialtypartners.com',
+            to: lead.email,
+            subject: `Re: ${visitorSubject(firstName)}`,
+            html: update.html,
+            text: update.text
+          })
+        });
+        visitorUpdated = r.ok;
+        if (!r.ok) console.error('Resend error (visitor update)', r.status, await r.text().catch(() => ''));
+      } catch (err) {
+        console.error('Resend request failed (visitor update)', err);
+      }
+    }
+  }
+
   // The details are lost only if they were neither saved nor emailed to Morgan.
   if (!saved && !notified) return res.status(500).json({ error: 'Details could not be saved or emailed' });
-  return res.status(200).json({ success: true, saved, notified });
+  return res.status(200).json({ success: true, saved, notified, visitorUpdated });
 }
