@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /quote-confirmation
+Disallow: /quote-thank-you
+
+Sitemap: https://www.sunrisespecialtypartners.com/sitemap.xml

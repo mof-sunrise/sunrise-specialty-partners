@@ -36,7 +36,7 @@ export default async function handler(req, res) {
         subject: `Property details added: ${email}`,
         html: `
           <div style="font-family:sans-serif;max-width:560px;margin:0 auto;">
-            <h2 style="color:#0D6E6E;">Step 2 Details Submitted</h2>
+            <h2 style="color:#006D77;">Step 2 Details Submitted</h2>
             <p style="color:#444;margin-bottom:16px;">The lead <strong>${email}</strong> just completed the property details form. Their quote_requests row has been updated.</p>
             <table style="width:100%;border-collapse:collapse;font-size:15px;">
               <tr><td style="padding:8px 0;color:#888;width:140px;">Address</td><td style="padding:8px 0;color:#111;">${address || 'Not provided'}</td></tr>
